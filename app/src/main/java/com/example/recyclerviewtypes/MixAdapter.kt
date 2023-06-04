@@ -1,5 +1,6 @@
 package com.example.recyclerviewtypes
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -9,8 +10,10 @@ import com.example.recyclerviewtypes.ItemTypes.PROFILE_TYPE
 import com.example.recyclerviewtypes.databinding.ItemOrderBinding
 import com.example.recyclerviewtypes.databinding.ItemProfileBinding
 
-class MixAdapter() : ListAdapter<BaseItemType, RecyclerView.ViewHolder>(BaseDiffCallBack<BaseItemType>()) {
+class MixAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+
+    private var itemList : List<BaseItemType> = ArrayList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             RecyclerView.ViewHolder {
         return when (viewType) {
@@ -33,15 +36,23 @@ class MixAdapter() : ListAdapter<BaseItemType, RecyclerView.ViewHolder>(BaseDiff
         }
     }
 
+    fun submitItems(items:List<BaseItemType>){
+        itemList = items
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as BaseViewHolder).onBind(getItem(position))
+        Log.d("MixAdapter", "onBindViewHolder: ${position % itemList.size}")
+        (holder as BaseViewHolder).onBind(itemList[position % itemList.size])
     }
 
     override fun getItemViewType(position: Int): Int {
-        return getItem(position).viewType
+        return itemList[position % itemList.size].viewType
     }
 
 
+    override fun getItemCount(): Int {
+        return itemList.size * 2
+    }
 
     inner class OrderViewHolder(private val binding: ItemOrderBinding) :
         RecyclerView.ViewHolder(binding.root), BaseViewHolder {

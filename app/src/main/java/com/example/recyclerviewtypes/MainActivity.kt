@@ -2,13 +2,14 @@ package com.example.recyclerviewtypes
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.recyclerviewtypes.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
@@ -38,8 +39,9 @@ class MainActivity : AppCompatActivity() {
             val adapter = MixAdapter()
             mixRecyclerView.layoutManager = layoutManager
             mixRecyclerView.adapter = adapter
-            adapter.submitList(mixDataList)
-        }
+            adapter.submitItems(mixDataList)
+            mixRecyclerView.addOnScrollListener(CircularScrollListener(mixDataList))
 
+        }
     }
 }
